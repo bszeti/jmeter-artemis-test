@@ -1,0 +1,53 @@
+# Using Jmeter for ActiveMQ Artemis
+
+JMeter can interact to a message broker via JMS. It requires a JNDI InitialContext to read connection parameters as it used to be with J2EE application servers. Artemis being a standalone message broker doesn't provide a JNDI service, but related client libraries has InitialContextFactory implementations that we can use to create a context required by the JMeter samplers.
+
+We can choose between the following Java clients (and the included InitialContextFactory) to connect to the broker:
+- Artemis Core client - org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory
+- Qpid AMQP client - org.apache.qpid.jms.jndi.JmsInitialContextFactory
+
+## Artemis Core client
+- Documentstion?
+- Source: https://github.com/apache/activemq-artemis/blob/master/artemis-jms-client/src/main/java/org/apache/activemq/artemis/jndi/ActiveMQInitialContextFactory.java
+If the provider url (java.naming.provider.url property) is set it's parsed as a broker connection url and it's added to the JNDI context with "ConnectionFactory" lookup name.
+As this the lookup logic add an extra layer of complexity the class supports _dynamicQueues/_ and _dynamicTopics/_ prefixes.
+
+The allowed protocols are tcp, udp,...
+
+## Qpid AMQP client
+The Qpid AMQP Java client has the class org.apache.qpid.jms.jndi.JmsInitialContextFactory.
+- Documentation: https://qpid.apache.org/releases/qpid-jms-0.54.0/docs/index.html
+- Source: https://github.com/apache/qpid-jms/blob/master/qpid-jms-client/src/main/java/org/apache/qpid/jms/jndi/JmsInitialContextFactory.java
+
+The connection url for the ConnectionFactory JNDI lookup name can be configured in jndi.properties as _connectionfactory.myFactoryLookup=amqp://localhost:5672_. The accepted protocols are amqp, amqps, amqpws, amqpwss.
+
+If the provider url (java.naming.provider.url property) is set a file url or path is expected that will be parsed instead of _jndi.properties_ on classpath. 
+TODO: How to pass as system property?
+
+To interact with a queue or a topic JMeter will do a JNDI lookup for a destination so we need a JDNI parameter respectively with _queue._ or _topic._ prefix. This prefix will also decide if the destination will be expected as a queue or a topic. If we want to use a queue called "myqueue" on the broker we need an JNDI property _queue.myDestinationLookupName=myqueue_ or in case of a topic _topic.myDestinationLookupName=mytopic_. The destination name _myDestinationLookupName_ must be used in the JMeter semplers. 
+
+As this the lookup logic add an extra layer of complexity the class supports _dynamicQueues/_ and _dynamicTopics/_ prefixes where we simply can add the name of the queue or tpoic on the broker and we don't need to add the JNDI parameters. To connect to "myqueue" on the broker we can just use _dynamicQueues/myqueue_ as the destination lookup name in the samplers. 
+
+Let's see how we can use this client in JMS samplers.
+
+## JMS Point-to-point 
+Works for queues only (?). This sampler comes with a JNDI Properties section, so we don't need to edit a jndi.properties file. 
+
+Core:
+Set JNDI _Initial Context Factory_ to _org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory_. Use any _QueueConnection Factory_ lookup name (e.g. MyConnectionFactory) and add the broker url to the JNDI properties table _connectionFactory.MyConnectionFactory=tcp://localhost:61616_. Alternatively the broker url can be set as _Provider URL_ with lookup name "ConnectionFactory".
+The queue name should be stored in a JNDI property _queue.mylookupname=myqueue_ and "mylookupname" is set as _JNDI name Request/Receive queue_, or we can use looukp name _dynamicQueues/myqueue_ so we can skip the queue JNDI property.
+
+AMQP:
+Set JNDI _Initial Context Factory_ to _org.apache.qpid.jms.jndi.JmsInitialContextFactory_. Use any _QueueConnection Factory_ lookup name (e.g. MyConnectionFactory) and add the connection url to the JNDI properties table _connectionfactory.MyConnectionFactory=amqp://artemishost:5672_. The queue name should be stored in a JNDI property _queue.mylookupname=myqueue_ and "mylookupname" is set as _JNDI name Request/Receive queue_. Or we can set _dynamicQueues/myqueue_ as JNDI name so we don't need the _queue.lookupname_ property.
+
+For both protocols the authentication username/password can be se via the usual _java.naming.security.principal_ and _java.naming.security.credentials_ JNDI properties.
+
+## JMS Publisher
+Can send messages to queues and topics too. It has no generic JNDI propeties table, but it comes with connection parameter fields instead.
+
+Core:
+Because of the beforementioned feature of _org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory_ using the _Provider URL_ as broker connection string it's possible to configure simple scenarios without using a _jndi.properties_ file. Set _Initial Context Factory_ to _org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory_, _Provider URL_ to _tcp://artemishost:61616_ and _Connection Factory_ to _ConnectionFactory_. Set username and password if _Use Authorization?_ is needed. Use _Destination_ pattern _dynamicQueues/myqueue_ so we can skip the queue lookup JNDI properties.
+TODO: What if we still want to use jndi.properties
+
+AMQP:
+The challange with _org.apache.qpid.jms.jndi.JmsInitialContextFactory_ is to set the broker connection url, we'll need a _jndi.properties_ file for that. This InitialContextFactory tries to parse the file url or path set in the _Provider URL_ field as a _jndi.properties_ file so we don't have to add that file to classpath. Simply leave the _Use jndi.properties file_ unchecked and set _Provider URL_ to the location of our custom file (e.g. /tmp/myjndi.properties) and set _connectionfactory.myConnectionFactory=amqp://localhost:5672_ while _Connection Factory_ field refers that lookup name (myConnectionFactory).
