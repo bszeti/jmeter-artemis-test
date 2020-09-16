@@ -7,17 +7,21 @@ We can choose between the following Java clients (and the included InitialContex
 - Qpid AMQP client - org.apache.qpid.jms.jndi.JmsInitialContextFactory
 
 ## Artemis Core client
-- Documentstion?
-- Source: https://github.com/apache/activemq-artemis/blob/master/artemis-jms-client/src/main/java/org/apache/activemq/artemis/jndi/ActiveMQInitialContextFactory.java
-If the provider url (java.naming.provider.url property) is set it's parsed as a broker connection url and it's added to the JNDI context with "ConnectionFactory" lookup name.
+Java client for Artmeis Core protocol with _org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory_:
+
+* Documentation: http://activemq.apache.org/components/artemis/documentation/latest/using-jms.html
+* Source: https://github.com/apache/activemq-artemis/blob/master/artemis-jms-client/src/main/java/org/apache/activemq/artemis/jndi/ActiveMQInitialContextFactory.java
+
+If the provider url (or _java.naming.provider.url_ property) is set, it's parsed as a broker connection url (!) and it's added to the JNDI context with "ConnectionFactory" lookup name.
 As this the lookup logic add an extra layer of complexity the class supports _dynamicQueues/_ and _dynamicTopics/_ prefixes.
 
-The allowed protocols are tcp, udp,...
+The allowed protocols are tcp, udp, vm, jgroups...
 
 ## Qpid AMQP client
 The Qpid AMQP Java client has the class org.apache.qpid.jms.jndi.JmsInitialContextFactory.
-- Documentation: https://qpid.apache.org/releases/qpid-jms-0.54.0/docs/index.html
-- Source: https://github.com/apache/qpid-jms/blob/master/qpid-jms-client/src/main/java/org/apache/qpid/jms/jndi/JmsInitialContextFactory.java
+
+* Documentation: https://qpid.apache.org/releases/qpid-jms-0.54.0/docs/index.html
+* Source: https://github.com/apache/qpid-jms/blob/master/qpid-jms-client/src/main/java/org/apache/qpid/jms/jndi/JmsInitialContextFactory.java
 
 The connection url for the ConnectionFactory JNDI lookup name can be configured in jndi.properties as _connectionfactory.myFactoryLookup=amqp://localhost:5672_. The accepted protocols are amqp, amqps, amqpws, amqpwss.
 
@@ -51,3 +55,44 @@ TODO: What if we still want to use jndi.properties
 
 AMQP:
 The challange with _org.apache.qpid.jms.jndi.JmsInitialContextFactory_ is to set the broker connection url, we'll need a _jndi.properties_ file for that. This InitialContextFactory tries to parse the file url or path set in the _Provider URL_ field as a _jndi.properties_ file so we don't have to add that file to classpath. Simply leave the _Use jndi.properties file_ unchecked and set _Provider URL_ to the location of our custom file (e.g. /tmp/myjndi.properties) and set _connectionfactory.myConnectionFactory=amqp://localhost:5672_ while _Connection Factory_ field refers that lookup name (myConnectionFactory).
+
+## Using jndi.properties
+
+In the examples above we - mostly - avoided creating a _jndi.properties_ file and adding it to the classpath. Let's try that approach instead of being dependent on the parameters of the samplers.
+A text file can be added to the classpath by packaging it into a jar file and adding the jar file to the classpath:
+
+* Create a file called _jndi.properties_
+* Package it into a jar 
+
+  jar -cf my-jndi-properties.jar jndi.properties
+
+* Add to JMeter's classpath by one of the following ways:
+** Drop the jar in the `lib` directory:
+
+   cp my-jndi-properties.jar $JMETER_HOME/lib/
+
+** Add `user.classpath` entry to `$JMETER_HOME/bin/user.properties`:
+
+   user.classpath=/path/my-jndi-properties.jar
+
+** Add `user.classpath` JMETER paramter via the command line:
+
+   jmeter.sh -Juser.classpath=/path/my-jndi-properties.jar
+
+The jndi.properties should look like something like this:
+```
+# AMQP
+java.naming.factory.initial=org.apache.qpid.jms.jndi.JmsInitialContextFactory
+connectionfactory.myConnectionFactory=amqp://localhost:5672
+
+#Core
+#java.naming.factory.initial=org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory
+#connectionFactory.myConnectionFactory=amqp://localhost:5672
+
+java.naming.security.principal=amq
+java.naming.security.credentials=secret
+queue.myqueue=q1
+topic.mytopic=t1
+```
+In the samplers we only need to set the lookup name for the ConnectionFactory (`myConnectionFactory`) and the Queue/Topic (`myqueue`) - or we can use _dynamicQueues/_ prefix. In _JMS Publisher/Subscriber_ enable _Use jndi.properties file_.
+
