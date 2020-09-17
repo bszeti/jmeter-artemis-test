@@ -176,3 +176,18 @@ As long as we'd like to use the Qpid AMQP client and `org.apache.qpid.jms.jndi.J
 The _jndi.properties_ file is read every time we run the JMeter test (as a new object is created) so we don't even need to restart JMeter if we make modifications in the file.
 
 This doesn't work with org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory as it expects a broker url in the _java.naming.provider.url_ property.
+
+# Files in this repo
+
+JMeter example files in this repo:
+
+* JMS-samplers.jmx: Contains an example of each JMS Sampler.
+* JMS-send.jmx: Send messages using _JMS Publisher_ with AMQP client using a _jndi.properties_ file. Run as:
+
+  export JMETER_OPTS='-Djava.naming.provider.url=./jndi.properties -Djava.naming.factory.initial=org.apache.qpid.jms.jndi.JmsInitialContextFactory'; \
+  $JMETER_HOME/bin/jmeter.sh -t ./JMS-send.jmx -n -l ./JMS-send.out
+
+* JMS-receive.jmx: Receive messages using _JMS Subscriber_ with AMQP client using a _jndi.properties_ file. Run as:
+
+  export JMETER_OPTS='-Djava.naming.provider.url=./jndi.properties -Djava.naming.factory.initial=org.apache.qpid.jms.jndi.JmsInitialContextFactory'; \
+  $JMETER_HOME/bin/jmeter.sh -t ./JMS-receive.jmx -n -l ./JMS-receive.out
