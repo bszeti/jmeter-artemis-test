@@ -128,7 +128,7 @@ ${messagedata}</stringProp>
         <hashTree/>
         <JMSSampler guiclass="JMSSamplerGui" testclass="JMSSampler" testname="JMS Point-to-Point - JNDI" enabled="false">
           <stringProp name="JMSSampler.queueconnectionfactory">myConnectionFactory</stringProp>
-          <stringProp name="JMSSampler.SendQueue">myqueue</stringProp>
+          <stringProp name="JMSSampler.SendQueue">mylookupname</stringProp>
           <stringProp name="JMSSampler.ReceiveQueue"></stringProp>
           <intProp name="JMSSampler.communicationStyle">0</intProp>
           <boolProp name="JMSSampler.isNonPersistent">false</boolProp>
@@ -200,7 +200,7 @@ ${messagedata}</stringProp>
           <stringProp name="jms.initial_context_factory"></stringProp>
           <stringProp name="jms.provider_url"></stringProp>
           <stringProp name="jms.connection_factory">myConnectionFactory</stringProp>
-          <stringProp name="jms.topic">myqueue</stringProp>
+          <stringProp name="jms.topic">mylookupname</stringProp>
           <stringProp name="jms.expiration"></stringProp>
           <stringProp name="jms_error_reconnect_on_codes"></stringProp>
           <stringProp name="jms.priority">0</stringProp>
@@ -219,6 +219,51 @@ ${messagedata}</stringProp>
           </elementProp>
           <boolProp name="jms.non_persistent">true</boolProp>
         </PublisherSampler>
+        <hashTree/>
+        <SubscriberSampler guiclass="JMSSubscriberGui" testclass="SubscriberSampler" testname="JMS Subscriber - Core" enabled="false">
+          <stringProp name="jms.jndi_properties">false</stringProp>
+          <stringProp name="jms.initial_context_factory">org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</stringProp>
+          <stringProp name="jms.provider_url">tcp://localhost:61616</stringProp>
+          <stringProp name="jms.connection_factory">ConnectionFactory</stringProp>
+          <stringProp name="jms.topic">dynamicQueues/myqueue</stringProp>
+          <stringProp name="jms.security_principle">amq</stringProp>
+          <stringProp name="jms.security_credentials">secret</stringProp>
+          <boolProp name="jms.authenticate">true</boolProp>
+          <stringProp name="jms.iterations">1</stringProp>
+          <stringProp name="jms.read_response">true</stringProp>
+          <stringProp name="jms.client_choice">jms_subscriber_on_message</stringProp>
+          <stringProp name="jms_error_reconnect_on_codes"></stringProp>
+        </SubscriberSampler>
+        <hashTree/>
+        <SubscriberSampler guiclass="JMSSubscriberGui" testclass="SubscriberSampler" testname="JMS Subscriber - AMQP" enabled="false">
+          <stringProp name="jms.jndi_properties">false</stringProp>
+          <stringProp name="jms.initial_context_factory">org.apache.qpid.jms.jndi.JmsInitialContextFactory</stringProp>
+          <stringProp name="jms.provider_url">/tmp/myjndi.properties</stringProp>
+          <stringProp name="jms.connection_factory">myConnectionFactory</stringProp>
+          <stringProp name="jms.topic">dynamicQueues/myqueue</stringProp>
+          <stringProp name="jms.security_principle">amq</stringProp>
+          <stringProp name="jms.security_credentials">secret</stringProp>
+          <boolProp name="jms.authenticate">true</boolProp>
+          <stringProp name="jms.iterations">1</stringProp>
+          <stringProp name="jms.read_response">true</stringProp>
+          <stringProp name="jms.client_choice">jms_subscriber_on_message</stringProp>
+          <stringProp name="jms_error_reconnect_on_codes"></stringProp>
+        </SubscriberSampler>
+        <hashTree/>
+        <SubscriberSampler guiclass="JMSSubscriberGui" testclass="SubscriberSampler" testname="JMS Subscriber - JNDI" enabled="false">
+          <stringProp name="jms.jndi_properties">true</stringProp>
+          <stringProp name="jms.initial_context_factory"></stringProp>
+          <stringProp name="jms.provider_url"></stringProp>
+          <stringProp name="jms.connection_factory">myConnectionFactory</stringProp>
+          <stringProp name="jms.topic">mylookupname</stringProp>
+          <stringProp name="jms.security_principle"></stringProp>
+          <stringProp name="jms.security_credentials"></stringProp>
+          <boolProp name="jms.authenticate">true</boolProp>
+          <stringProp name="jms.iterations">1</stringProp>
+          <stringProp name="jms.read_response">true</stringProp>
+          <stringProp name="jms.client_choice">jms_subscriber_on_message</stringProp>
+          <stringProp name="jms_error_reconnect_on_codes"></stringProp>
+        </SubscriberSampler>
         <hashTree/>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
