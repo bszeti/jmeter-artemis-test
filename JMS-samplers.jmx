@@ -37,7 +37,7 @@
         </Arguments>
         <hashTree/>
         <JMSSampler guiclass="JMSSamplerGui" testclass="JMSSampler" testname="JMS Point-to-Point - Core" enabled="false">
-          <stringProp name="JMSSampler.queueconnectionfactory">ConnectionFactory</stringProp>
+          <stringProp name="JMSSampler.queueconnectionfactory">myConnectionFactory</stringProp>
           <stringProp name="JMSSampler.SendQueue">mylookupname</stringProp>
           <stringProp name="JMSSampler.ReceiveQueue"></stringProp>
           <intProp name="JMSSampler.communicationStyle">0</intProp>
@@ -45,10 +45,10 @@
           <boolProp name="JMSSampler.useReqMsgIdAsCorrelId">false</boolProp>
           <stringProp name="JMSSampler.timeout"></stringProp>
           <stringProp name="JMSSampler.jmsNumberOfSamplesToAggregate"></stringProp>
-          <stringProp name="HTTPSamper.xml_data">Artemis Core P2P test
-</stringProp>
+          <stringProp name="HTTPSamper.xml_data">JMS Point-to-Point - Core
+${messagedata}</stringProp>
           <stringProp name="JMSSampler.initialContextFactory">org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</stringProp>
-          <stringProp name="JMSSampler.contextProviderUrl">tcp://localhost:61616</stringProp>
+          <stringProp name="JMSSampler.contextProviderUrl"></stringProp>
           <elementProp name="JMSSampler.jndiProperties" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments">
               <elementProp name="queue.mylookupname" elementType="Argument">
@@ -66,6 +66,11 @@
                 <stringProp name="Argument.value">secret</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
+              <elementProp name="connectionFactory.myConnectionFactory" elementType="Argument">
+                <stringProp name="Argument.name">connectionFactory.myConnectionFactory</stringProp>
+                <stringProp name="Argument.value">tcp://localhost:61616</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
             </collectionProp>
           </elementProp>
           <elementProp name="arguments" elementType="JMSProperties">
@@ -74,22 +79,22 @@
         </JMSSampler>
         <hashTree/>
         <JMSSampler guiclass="JMSSamplerGui" testclass="JMSSampler" testname="JMS Point-to-Point - AMQP" enabled="false">
-          <stringProp name="JMSSampler.queueconnectionfactory">MyConnectionFactory</stringProp>
-          <stringProp name="JMSSampler.SendQueue">testqueue</stringProp>
-          <stringProp name="JMSSampler.ReceiveQueue">dynamicQueues/replyq</stringProp>
-          <intProp name="JMSSampler.communicationStyle">1</intProp>
+          <stringProp name="JMSSampler.queueconnectionfactory">myConnectionFactory</stringProp>
+          <stringProp name="JMSSampler.SendQueue">mylookupname</stringProp>
+          <stringProp name="JMSSampler.ReceiveQueue"></stringProp>
+          <intProp name="JMSSampler.communicationStyle">0</intProp>
           <boolProp name="JMSSampler.isNonPersistent">false</boolProp>
           <boolProp name="JMSSampler.useReqMsgIdAsCorrelId">false</boolProp>
-          <stringProp name="JMSSampler.timeout">10000</stringProp>
+          <stringProp name="JMSSampler.timeout"></stringProp>
           <stringProp name="JMSSampler.jmsNumberOfSamplesToAggregate"></stringProp>
-          <stringProp name="HTTPSamper.xml_data">AMQP P2P test
+          <stringProp name="HTTPSamper.xml_data">JMS Point-to-Point - AMQP
 ${messagedata}</stringProp>
           <stringProp name="JMSSampler.initialContextFactory">org.apache.qpid.jms.jndi.JmsInitialContextFactory</stringProp>
           <stringProp name="JMSSampler.contextProviderUrl"></stringProp>
           <elementProp name="JMSSampler.jndiProperties" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
             <collectionProp name="Arguments.arguments">
-              <elementProp name="queue.testqueue" elementType="Argument">
-                <stringProp name="Argument.name">queue.testqueue</stringProp>
+              <elementProp name="queue.mylookupname" elementType="Argument">
+                <stringProp name="Argument.name">queue.mylookupname</stringProp>
                 <stringProp name="Argument.value">myqueue</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -103,8 +108,8 @@ ${messagedata}</stringProp>
                 <stringProp name="Argument.value">secret</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
-              <elementProp name="connectionfactory.MyConnectionFactory" elementType="Argument">
-                <stringProp name="Argument.name">connectionfactory.MyConnectionFactory</stringProp>
+              <elementProp name="connectionfactory.myConnectionFactory" elementType="Argument">
+                <stringProp name="Argument.name">connectionfactory.myConnectionFactory</stringProp>
                 <stringProp name="Argument.value">amqp://localhost:5672</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -121,7 +126,7 @@ ${messagedata}</stringProp>
           </elementProp>
         </JMSSampler>
         <hashTree/>
-        <JMSSampler guiclass="JMSSamplerGui" testclass="JMSSampler" testname="JMS Point-to-Point - JNDI" enabled="true">
+        <JMSSampler guiclass="JMSSamplerGui" testclass="JMSSampler" testname="JMS Point-to-Point - JNDI" enabled="false">
           <stringProp name="JMSSampler.queueconnectionfactory">myConnectionFactory</stringProp>
           <stringProp name="JMSSampler.SendQueue">myqueue</stringProp>
           <stringProp name="JMSSampler.ReceiveQueue"></stringProp>
@@ -130,7 +135,7 @@ ${messagedata}</stringProp>
           <boolProp name="JMSSampler.useReqMsgIdAsCorrelId">false</boolProp>
           <stringProp name="JMSSampler.timeout"></stringProp>
           <stringProp name="JMSSampler.jmsNumberOfSamplesToAggregate"></stringProp>
-          <stringProp name="HTTPSamper.xml_data">AMQP P2P test
+          <stringProp name="HTTPSamper.xml_data">JMS Point-to-Point - JNDI
 ${messagedata}</stringProp>
           <stringProp name="JMSSampler.initialContextFactory"></stringProp>
           <stringProp name="JMSSampler.contextProviderUrl"></stringProp>
@@ -147,13 +152,13 @@ ${messagedata}</stringProp>
           <stringProp name="jms.initial_context_factory">org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</stringProp>
           <stringProp name="jms.provider_url">tcp://localhost:61616</stringProp>
           <stringProp name="jms.connection_factory">ConnectionFactory</stringProp>
-          <stringProp name="jms.topic">dynamicQueues/q1</stringProp>
+          <stringProp name="jms.topic">dynamicQueues/myqueue</stringProp>
           <stringProp name="jms.expiration"></stringProp>
           <stringProp name="jms_error_reconnect_on_codes"></stringProp>
           <stringProp name="jms.priority">0</stringProp>
           <stringProp name="jms.security_principle">amq</stringProp>
           <stringProp name="jms.security_credentials">secret</stringProp>
-          <stringProp name="jms.text_message">JMS Publisher - GUI
+          <stringProp name="jms.text_message">JMS Publisher - Core
 ${messagedata}</stringProp>
           <stringProp name="jms.input_file"></stringProp>
           <stringProp name="jms.random_path"></stringProp>
@@ -169,15 +174,16 @@ ${messagedata}</stringProp>
         <PublisherSampler guiclass="JMSPublisherGui" testclass="PublisherSampler" testname="JMS Publisher - AMQP" enabled="false">
           <stringProp name="jms.jndi_properties">false</stringProp>
           <stringProp name="jms.initial_context_factory">org.apache.qpid.jms.jndi.JmsInitialContextFactory</stringProp>
-          <stringProp name="jms.provider_url">/Users/bszeti/tmp/amq/jmeter/jndi.properties</stringProp>
+          <stringProp name="jms.provider_url">/tmp/myjndi.properties</stringProp>
           <stringProp name="jms.connection_factory">myConnectionFactory</stringProp>
-          <stringProp name="jms.topic">dynamicQueues/q1</stringProp>
+          <stringProp name="jms.topic">dynamicQueues/myqueue</stringProp>
           <stringProp name="jms.expiration"></stringProp>
           <stringProp name="jms_error_reconnect_on_codes"></stringProp>
           <stringProp name="jms.priority">0</stringProp>
           <stringProp name="jms.security_principle">amq</stringProp>
           <stringProp name="jms.security_credentials">secret</stringProp>
-          <stringProp name="jms.text_message">BLAH</stringProp>
+          <stringProp name="jms.text_message">JMS Publisher - AMQP
+${messagedata}</stringProp>
           <stringProp name="jms.input_file"></stringProp>
           <stringProp name="jms.random_path"></stringProp>
           <stringProp name="jms.config_choice">jms_use_text</stringProp>
@@ -191,7 +197,7 @@ ${messagedata}</stringProp>
         <hashTree/>
         <PublisherSampler guiclass="JMSPublisherGui" testclass="PublisherSampler" testname="JMS Publisher - JNDI" enabled="false">
           <stringProp name="jms.jndi_properties">true</stringProp>
-          <stringProp name="jms.initial_context_factory">org.apache.qpid.jms.jndi.JmsInitialContextFactory</stringProp>
+          <stringProp name="jms.initial_context_factory"></stringProp>
           <stringProp name="jms.provider_url"></stringProp>
           <stringProp name="jms.connection_factory">myConnectionFactory</stringProp>
           <stringProp name="jms.topic">myqueue</stringProp>
