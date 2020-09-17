@@ -113,7 +113,7 @@ image::images/JMS_Publisher_AMQP.png[JMS Publisher - AMQP]
 
 ## JMS Subscriber
 
-The _JMS Subscriber sampler's parameters match the _JMS Publisher_.
+The _JMS Subscriber_ sampler's parameters match the _JMS Publisher_ sampler's fields.
 
 ## Using a _jndi.properties_ file
 
