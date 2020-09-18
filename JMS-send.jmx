@@ -42,7 +42,7 @@
           <stringProp name="jms.provider_url"></stringProp>
           <stringProp name="jms.connection_factory">myConnectionFactory</stringProp>
           <stringProp name="jms.topic">targetqueue</stringProp>
-          <stringProp name="jms.expiration">0</stringProp>
+          <stringProp name="jms.expiration"></stringProp>
           <stringProp name="jms_error_reconnect_on_codes"></stringProp>
           <stringProp name="jms.priority">0</stringProp>
           <stringProp name="jms.security_principle"></stringProp>
