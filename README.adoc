@@ -185,9 +185,11 @@ JMeter example files in this repo:
 * JMS-send.jmx: Send messages using _JMS Publisher_ with AMQP client using a _jndi.properties_ file. Run as:
 
   export JMETER_OPTS='-Djava.naming.provider.url=./jndi.properties -Djava.naming.factory.initial=org.apache.qpid.jms.jndi.JmsInitialContextFactory'; \
-  $JMETER_HOME/bin/jmeter.sh -t ./JMS-send.jmx -n -l ./JMS-send.out
+  $JMETER_HOME/bin/jmeter.sh -Jthroughput=6000 -t ./JMS-send.jmx -n -l ./JMS-send.out
 
 * JMS-receive.jmx: Receive messages using _JMS Subscriber_ with AMQP client using a _jndi.properties_ file. Run as:
 
   export JMETER_OPTS='-Djava.naming.provider.url=./jndi.properties -Djava.naming.factory.initial=org.apache.qpid.jms.jndi.JmsInitialContextFactory'; \
   $JMETER_HOME/bin/jmeter.sh -t ./JMS-receive.jmx -n -l ./JMS-receive.out
+
+The _JMS-send.jmx_ and _JMS-receive.jmx_ scripts support the `throughput` property to limit the number of messages handled per minute.
