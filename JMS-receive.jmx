@@ -41,7 +41,7 @@
           <boolProp name="jms.authenticate">true</boolProp>
           <stringProp name="jms.iterations">1</stringProp>
           <stringProp name="jms.read_response">true</stringProp>
-          <stringProp name="jms.client_choice">jms_subscriber_on_message</stringProp>
+          <stringProp name="jms.client_choice">jms_subscriber_receive</stringProp>
           <stringProp name="jms_error_reconnect_on_codes"></stringProp>
         </SubscriberSampler>
         <hashTree/>
