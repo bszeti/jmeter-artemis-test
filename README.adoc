@@ -197,3 +197,8 @@ The _JMS-send.jmx_ and _JMS-receive.jmx_ scripts support the following propertie
 * `threads`: Number of threads. Default is 1.
 * `loopcount`: Number of messages per thread. Default is 1.
 * `throughput`: Limit the number of messages handled per minute. Default is -1 (no limit).
+
+The _JMS-send.jmx_ script also support the following properties:
+
+* `messagelength`: Length of random string generated for message body. Default is 1024.
+* `extrapropertylength`: Length of random string generated for message property called _EXTRA_. Should be less than 100000. Default is 1.
