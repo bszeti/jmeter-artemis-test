@@ -286,6 +286,21 @@ ${messagedata}</stringProp>
           <boolProp name="jms.non_persistent">true</boolProp>
         </PublisherSampler>
         <hashTree/>
+        <SubscriberSampler guiclass="JMSSubscriberGui" testclass="SubscriberSampler" testname="JMS Subscriber - Openwire" enabled="false">
+          <stringProp name="jms.jndi_properties">false</stringProp>
+          <stringProp name="jms.initial_context_factory">org.apache.activemq.jndi.ActiveMQInitialContextFactory</stringProp>
+          <stringProp name="jms.provider_url">tcp://localhost:61616</stringProp>
+          <stringProp name="jms.connection_factory">ConnectionFactory</stringProp>
+          <stringProp name="jms.topic">dynamicQueues/myqueue</stringProp>
+          <stringProp name="jms.security_principle">amq</stringProp>
+          <stringProp name="jms.security_credentials">secret</stringProp>
+          <boolProp name="jms.authenticate">true</boolProp>
+          <stringProp name="jms.iterations">1</stringProp>
+          <stringProp name="jms.read_response">true</stringProp>
+          <stringProp name="jms.client_choice">jms_subscriber_on_message</stringProp>
+          <stringProp name="jms_error_reconnect_on_codes"></stringProp>
+        </SubscriberSampler>
+        <hashTree/>
         <SubscriberSampler guiclass="JMSSubscriberGui" testclass="SubscriberSampler" testname="JMS Subscriber - Core" enabled="false">
           <stringProp name="jms.jndi_properties">false</stringProp>
           <stringProp name="jms.initial_context_factory">org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</stringProp>
