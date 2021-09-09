@@ -14,7 +14,7 @@ We need to add the cient jar files from `$ARTEMIS_HOME/lib` to JMeter's classpat
 
 * Artemis Core client: _artemis-jms-client-all-x.z.y.jar_
 * Qpid AMQP client: _artemis-jms-client-all-x.z.y.jar_, _qpid-jms-client-x.y.z.jar_, _proton-j-x.y.z.jar_
-* Openwire client: _activemq-client-all-x.z.y.jar_
+* Openwire client: _activemq-all-x.z.y.jar_
 
 ## Artemis Core client
 
