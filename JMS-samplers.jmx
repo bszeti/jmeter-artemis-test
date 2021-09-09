@@ -189,6 +189,30 @@ ${messagedata}</stringProp>
           </elementProp>
         </JMSSampler>
         <hashTree/>
+        <PublisherSampler guiclass="JMSPublisherGui" testclass="PublisherSampler" testname="JMS Publisher - Openwire" enabled="false">
+          <stringProp name="jms.jndi_properties">false</stringProp>
+          <stringProp name="jms.initial_context_factory">org.apache.activemq.jndi.ActiveMQInitialContextFactory</stringProp>
+          <stringProp name="jms.provider_url">tcp://localhost:61616</stringProp>
+          <stringProp name="jms.connection_factory">ConnectionFactory</stringProp>
+          <stringProp name="jms.topic">dynamicQueues/myqueue</stringProp>
+          <stringProp name="jms.expiration"></stringProp>
+          <stringProp name="jms_error_reconnect_on_codes"></stringProp>
+          <stringProp name="jms.priority">0</stringProp>
+          <stringProp name="jms.security_principle">amq</stringProp>
+          <stringProp name="jms.security_credentials">secret</stringProp>
+          <stringProp name="jms.text_message">JMS Publisher - Core
+${messagedata}</stringProp>
+          <stringProp name="jms.input_file"></stringProp>
+          <stringProp name="jms.random_path"></stringProp>
+          <stringProp name="jms.config_choice">jms_use_text</stringProp>
+          <stringProp name="jms.config_msg_type">jms_text_message</stringProp>
+          <stringProp name="jms.iterations">1</stringProp>
+          <boolProp name="jms.authenticate">true</boolProp>
+          <elementProp name="jms.jmsProperties" elementType="JMSProperties">
+            <collectionProp name="JMSProperties.properties"/>
+          </elementProp>
+        </PublisherSampler>
+        <hashTree/>
         <PublisherSampler guiclass="JMSPublisherGui" testclass="PublisherSampler" testname="JMS Publisher - Core" enabled="false">
           <stringProp name="jms.jndi_properties">false</stringProp>
           <stringProp name="jms.initial_context_factory">org.apache.activemq.artemis.jndi.ActiveMQInitialContextFactory</stringProp>
