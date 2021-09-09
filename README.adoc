@@ -51,7 +51,7 @@ If the Provider URL (or _java.naming.provider.url_ property) is set, a file url 
 Java client for ActiveMQ Openwire protocol with _org.apache.activemq.jndi.ActiveMQInitialContextFactory_ JDNI Context:
 
 * Documentation: http://activemq.apache.org/components/artemis/documentation/latest/using-jms.html
-* Source: https://github.com/apache/activemq-artemis/blob/master/activemq-client/src/main/java/org/apache/activemq/jndi/ActiveMQInitialContextFactory.java
+* Source: https://github.com/apache/activemq/blob/main/activemq-client/src/main/java/org/apache/activemq/jndi/ActiveMQInitialContextFactory.java
 
 The JNDI property naming convention for _org.apache.activemq.jndi.ActiveMQInitialContextFactory_:
 
