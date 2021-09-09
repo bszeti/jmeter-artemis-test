@@ -6,6 +6,7 @@ We can choose between the following Java clients (and the included _InitialConte
 
 * Artemis Core client
 * Qpid AMQP client
+* Openwire client
 
 The InitialContextFactory implementations in these client libraries have some differences that we need to understand before trying to use them in JMeter samplers. (This will make more sense when we look at the JMeter side)
 
@@ -13,6 +14,7 @@ We need to add the cient jar files from `$ARTEMIS_HOME/lib` to JMeter's classpat
 
 * Artemis Core client: _artemis-jms-client-all-x.z.y.jar_
 * Qpid AMQP client: _artemis-jms-client-all-x.z.y.jar_, _qpid-jms-client-x.y.z.jar_, _proton-j-x.y.z.jar_
+* Openwire client: _activemq-client-all-x.z.y.jar_
 
 ## Artemis Core client
 
@@ -44,6 +46,21 @@ The JNDI property naming convention for _org.apache.qpid.jms.jndi.JmsInitialCont
 
 If the Provider URL (or _java.naming.provider.url_ property) is set, a file url or path is expected that will be parsed instead of the _jndi.properties_ on the classpath. This is an important difference compared to _ActiveMQInitialContextFactory_.
 
+## Openwire client
+
+Java client for ActiveMQ Openwire protocol with _org.apache.activemq.jndi.ActiveMQInitialContextFactory_ JDNI Context:
+
+* Documentation: http://activemq.apache.org/components/artemis/documentation/latest/using-jms.html
+* Source: https://github.com/apache/activemq-artemis/blob/master/activemq-client/src/main/java/org/apache/activemq/jndi/ActiveMQInitialContextFactory.java
+
+The JNDI property naming convention for _org.apache.activemq.jndi.ActiveMQInitialContextFactory_:
+
+* The connection url for the broker should be set in a JNDI property matching the connection factory lookup name with the `connection.` prefix. For example as `connection.ConnectionFactory=tcp://localhost:61616`. The accepted protocols are _tcp://_.
+* The queue or topic name on the broker side should be set as JNDI property with _queue._ or _topic._ prefix. For example `queue.myDestinationLookupName=myqueue` or `topic.myDestinationLookupName=mytopic`. 
+* As this the queue/topic lookup logic adds an extra layer of complexity, the class supports _dynamicQueues/_ and _dynamicTopics/_ prefixes where we can simply add the broker side name of the queue or topic and we don't need to set the _queue.*_ or _topic.*_ JNDI properties at all. To connect to _myqueue_ on the broker we can just use `dynamicQueues/myqueue` as the destination lookup name in the samplers.
+
+Surprisingly if the Provider URL (or _java.naming.provider.url_ property) is set, it's parsed as a broker connection url - instead of a JNDI provider endpoint - by the _ActiveMQInitialContextFactory_  and it's added to the JNDI context as `ConnectionFactory` lookup name, see later how this feature (?) can be utilized.
+
 // To interact with a queue or a topic JMeter will do a JNDI lookup for a destination so we need a JDNI parameter respectively with _queue._ or _topic._ prefix (prefix is case insensitive). This prefix will also decide if the destination will be expected as a queue or a topic. If we want to use a queue called "myqueue" on the broker we need an JNDI property _queue.myDestinationLookupName=myqueue_ or in case of a topic _topic.myDestinationLookupName=mytopic_. The destination name _myDestinationLookupName_ must be used in the JMeter semplers. 
 
 // As this the lookup logic add an extra layer of complexity the class supports _dynamicQueues/_ and _dynamicTopics/_ prefixes where we simply can add the name of the queue or tpoic on the broker and we don't need to add the JNDI parameters. To connect to "myqueue" on the broker we can just use _dynamicQueues/myqueue_ as the destination lookup name in the samplers. 
@@ -72,7 +89,16 @@ Set fields:
 * _QueueConnection Factory_ : Add the connection url lookup name to the JNDI properties table `connectionfactory.myConnectionFactory=amqp://artemishost:5672`
 * The broker side queue name comes to `queue.mylookupname=myqueue` in the JNDI table. _JNDI name Request/Receive queue_ is set accordingly to `mylookupname`. Or we can use `dynamicQueues/myqueue`.
 
-image::images/JMS_Point-to-Point_AMQP.png[JMS Point-to-Point - AMQP]
+image::images/JMS_Point-to-Point_AMQP.png[JMS Point-to-Point - AMQP]o
+
+*Openwire client*
+
+Set fields:
+
+* _Initial Context Factory_: `org.apache.activemq.jndi.ActiveMQInitialContextFactory`
+* _QueueConnection Factory_: lookup name (e.g. `ConnectionFactory`). Add the broker url to the _JNDI properties_ table `connection.ConnectionFactory=tcp://localhost:61616_`. (Alternatively the broker url can be set as _Provider URL_ with lookup name `ConnectionFactory`)
+* The queue name should be stored in a JNDI property `queue.mylookupname=myqueue` and having set _JNDI name Request/Receive queue_ to `mylookupname`. Or we can use lookup name `dynamicQueues/myqueue` so we can skip the queue JNDI property.
+
 
 [NOTE]
 ====
